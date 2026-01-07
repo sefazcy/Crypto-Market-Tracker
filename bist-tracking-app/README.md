@@ -1,52 +1,39 @@
-# 🚀 Kripto Piyasası İzleyici (BTE313 Final Projesi)
+# 🚀 Crypto Market Tracker (BTE313 Final Project)
 
-Marmara Üniversitesi BTE313 dersi final projesi kapsamında geliştirilmiş, anlık kripto para verilerini takip etmeyi sağlayan React tabanlı web uygulamasıdır.
+Developed as part of the BTE313 course final project at Hacettepe University, this React-based web application allows users to track real-time cryptocurrency data.
 
-**Geliştirici:** Sefa Usta
+**Developer:** Sefa Usta
 
-## 🌟 Özellikler
+## 🌟 Features
 
-- **Anlık Piyasa Verileri:** CoinGecko API üzerinden 100+ kripto paranın canlı fiyat, değişim ve hacim bilgileri.
-- **Detaylı İnceleme:** Her coine özel açılan pencerede (modal) 24s en yüksek/düşük, piyasa değeri ve sanal al/sat arayüzü.
-- **📈 Sparkline Grafikleri:** 7 günlük fiyat değişimini gösteren mini grafikler.
-- **❤️ Favorilerim:** İlgilendiğiniz coinleri favorilere ekleyip filtreleme özelliği. (LocalStorage ile kaydedilir).
-- **💰 Sanal Cüzdan:** 100.000 TL başlangıç bakiyesi ile sanal ortamda al-sat yapma imkanı. Portföy takibi.
-- **🧮 Kripto Dönüştürücü:** TL, USD, EUR, GBP kurları ile anlık çeviri yapabilen hesaplama aracı.
-- **🔔 Fiyat Alarmları:** Belirlenen fiyatın altına/üstüne gelindiğinde kullanıcıyı (Toast mesajı ile) uyarma.
-- **Tema Desteği:** Aydınlık ve Karanlık mod seçenekleri.
-- **Dil Desteği:** Türkçe ve İngilizce dil seçeneği.
+- **Real-Time Market Data:** Live price, change percentage, and volume data for 100+ cryptocurrencies via CoinGecko API.
+- **Detailed Analysis:** Pop-up modal for each coin showing 24h High/Low, Market Cap, and a virtual Buy/Sell interface.
+- **📈 Sparkline Charts:** Mini charts displaying the 7-day price trend for each coin.
+- **❤️ Favorites:** Watchlist functionality to track favorite coins (Persisted via LocalStorage).
+- **💰 Virtual Wallet:** A simulation environment with a starting balance of 100,000 TL to practice trading without risk. Includes portfolio tracking.
+- **🧮 Crypto Converter:** An instant calculation tool for converting between TRY, USD, EUR, GBP and cryptocurrencies.
+- **🔔 Price Alerts:** Set custom price targets and receive toast notifications when the price hits the target.
+- **Theme Support:** Toggle between Light and Dark modes.
+- **Language Support:** Bilingual support for Turkish (TR) and English (EN).
 
-## 🛠 Kullanılan Teknolojiler
+## 🛠 Technologies Used
 
-- **React:** Kullanıcı arayüzü ve bileşen mimarisi.
-- **Vite:** Hızlı geliştirme ve build aracı.
-- **CoinGecko API:** Kripto para veri sağlayıcısı.
-- **CSS3:** Özelleştirilmiş, responsive ve modern tasarım (Glassmorphism efektleri).
-- **LocalStorage:** Kullanıcı verilerini (favoriler, bakiye, portföy) tarayıcıda saklama.
+- **React:** Component-based UI architecture.
+- **Vite:** Fast development and build tool.
+- **CoinGecko API:** Reliable cryptocurrency data provider.
+- **CSS3:** Custom, responsive, modern design with Glassmorphism effects.
+- **LocalStorage:** Client-side persistence for user preferences, wallet balance, and portfolio.
 
-## 🚀 Kurulum ve Çalıştırma
+## � Screenshots
 
-Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
+### Dashboard (Dark Mode)
+![Dashboard Dark Mode](./screenshots/dashboard_dark.png)
 
-1. **Projeyi İndirin:**
-   Proje klasörüne terminal üzerinden gidin.
+### Coin Detail & Sparkline Charts
+![Coin Details](./screenshots/coin_details.png)
 
-2. **Bağımlılıkları Yükleyin:**
-   ```bash
-   npm install
-   ```
+### Crypto Converter Tool
+![Crypto Converter](./screenshots/converter.png)
 
-3. **Uygulamayı Başlatın:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Tarayıcıda Açın:**
-   Terminalde verilen adrese (genellikle `http://localhost:5173`) gidin.
-
-## 📸 Ekran Görüntüleri
-
-Uygulama ana ekranı, detay penceresi ve dönüştürücü özelliklerini içerir.
-
----
-*Bu proje eğitim amaçlıdır.*
+### Light Mode
+![Light Mode](./screenshots/light_mode.png)
