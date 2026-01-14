@@ -3,6 +3,8 @@ import { fetchStocks } from './services/api';
 import StockList from './components/StockList';
 import CoinDetailModal from './components/CoinDetailModal';
 import ConverterModal from './components/ConverterModal';
+import NewsTicker from './components/NewsTicker';
+import WalletModal from './components/WalletModal';
 
 function App() {
   const [stocks, setStocks] = useState([]);
@@ -14,6 +16,7 @@ function App() {
   const [language, setLanguage] = useState('tr');
   const [selectedCoin, setSelectedCoin] = useState(null);
   const [showConverter, setShowConverter] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('cryptoFavorites');
     return saved ? JSON.parse(saved) : [];
@@ -28,6 +31,12 @@ function App() {
   const [portfolio, setPortfolio] = useState(() => {
     const saved = localStorage.getItem('cryptoPortfolio');
     return saved ? JSON.parse(saved) : {};
+  });
+
+  // Gamification: Badges
+  const [badges, setBadges] = useState(() => {
+    const saved = localStorage.getItem('cryptoBadges');
+    return saved ? JSON.parse(saved) : [];
   });
 
   // Alert State
@@ -76,6 +85,8 @@ function App() {
       priceBelow: 'Fiyat şunun altına düşünce:',
       alertSet: 'Alarm kuruldu!',
       alertTriggered: '🔔 FİYAT ALARMI!',
+      badgeUnlocked: '🏆 YENİ ROZET KAZANILDI:',
+      totalBalance: 'Toplam Varlık'
     },
     en: {
       title: 'Crypto Market Tracker 🚀',
@@ -115,6 +126,90 @@ function App() {
       priceBelow: 'Price goes below:',
       alertSet: 'Alert set!',
       alertTriggered: '🔔 PRICE ALERT!',
+      badgeUnlocked: '🏆 NEW BADGE UNLOCKED:',
+      totalBalance: 'Total Assets'
+    },
+    es: {
+      title: 'Rastreador de Mercado Cripto 🚀',
+      lightMode: '☀️ Modo Claro',
+      darkMode: '🌙 Modo Oscuro',
+      lastUpdated: 'Última actualización',
+      topGainer: '🔥 Mayor Ganador',
+      topLoser: '❄️ Mayor Perdedor',
+      searchPlaceholder: 'Buscar moneda (ej. BTC, Bitcoin)...',
+      sortAZ: 'Alfabético (A-Z)',
+      sortZA: 'Alfabético (Z-A)',
+      sortGain: 'Mayores Ganadores',
+      sortLoss: 'Mayores Perdedores',
+      loading: 'Cargando datos del mercado...',
+      footerProject: 'Proyecto Final BTE313 | App de Rastreo de Datos Cripto',
+      footerUni: 'Sefa Usta',
+      coinNotFound: 'Moneda no encontrada.',
+      langBtn: '🇪🇸 ES',
+      high24h: 'Máx 24h',
+      low24h: 'Mín 24h',
+      marketCap: 'Cap. de Mercado',
+      volume: 'Volumen 24h',
+      favorites: '❤️ Favoritos',
+      allCoins: '🌐 Todas',
+      noFavorites: 'Aún no hay favoritos.',
+      wallet: 'Billetera',
+      buy: 'Comprar',
+      sell: 'Vender',
+      amount: 'Cantidad',
+      owned: 'Propiedad',
+      insufficientBalance: '¡Saldo Insuficiente!',
+      insufficientAsset: '¡Activo Insuficiente!',
+      successTransaction: '¡Transacción Exitosa!',
+      converter: 'Convertidor Cripto',
+      setAlert: '🔔 Alerta de Precio',
+      priceAbove: 'Precio sube por encima de:',
+      priceBelow: 'Precio baja por debajo de:',
+      alertSet: '¡Alerta configurada!',
+      alertTriggered: '🔔 ¡ALERTA DE PRECIO!',
+      badgeUnlocked: '🏆 NUEVA INSIGNIA DESBLOQUEADA:',
+      totalBalance: 'Activos Totales'
+    },
+    fr: {
+      title: 'Suivi du Marché Crypto 🚀',
+      lightMode: '☀️ Mode Clair',
+      darkMode: '🌙 Mode Sombre',
+      lastUpdated: 'Dernière mise à jour',
+      topGainer: '🔥 Meilleure Hausse',
+      topLoser: '❄️ Meilleure Baisse',
+      searchPlaceholder: 'Rechercher (ex. BTC, Bitcoin)...',
+      sortAZ: 'Alphabétique (A-Z)',
+      sortZA: 'Alphabétique (Z-A)',
+      sortGain: 'Meilleurs Gains',
+      sortLoss: 'Meilleures Pertes',
+      loading: 'Chargement des données...',
+      footerProject: 'Projet Final BTE313 | App de Suivi Crypto',
+      footerUni: 'Sefa Usta',
+      coinNotFound: 'Monnaie non trouvée.',
+      langBtn: '🇫🇷 FR',
+      high24h: 'Haut 24h',
+      low24h: 'Bas 24h',
+      marketCap: 'Cap. Marché',
+      volume: 'Volume 24h',
+      favorites: '❤️ Favoris',
+      allCoins: '🌐 Toutes',
+      noFavorites: 'Pas encore de favoris.',
+      wallet: 'Portefeuille',
+      buy: 'Acheter',
+      sell: 'Vendre',
+      amount: 'Montant',
+      owned: 'Possédé',
+      insufficientBalance: 'Solde Insuffisant!',
+      insufficientAsset: 'Actif Insuffisant!',
+      successTransaction: 'Transaction Réussie!',
+      converter: 'Convertisseur Crypto',
+      setAlert: '🔔 Alerte Prix',
+      priceAbove: 'Prix dépasse:',
+      priceBelow: 'Prix descend sous:',
+      alertSet: 'Alerte définie!',
+      alertTriggered: '🔔 ALERTE PRIX!',
+      badgeUnlocked: '🏆 NOUVEAU BADGE DÉBLOQUÉ:',
+      totalBalance: 'Actifs Totaux'
     }
   };
 
@@ -133,12 +228,49 @@ function App() {
     localStorage.setItem('cryptoAlerts', JSON.stringify(alerts));
   }, [alerts]);
 
+  useEffect(() => {
+    localStorage.setItem('cryptoBadges', JSON.stringify(badges));
+  }, [badges]);
+
+  // Live Price Simulation Effect
+  useEffect(() => {
+    if (loading || stocks.length === 0) return;
+
+    const interval = setInterval(() => {
+      setStocks(prevStocks => prevStocks.map(stock => {
+        // Random change between -0.5% and +0.5%
+        const changePercent = (Math.random() * 1) - 0.5;
+        const currentPrice = parseFloat(stock.price);
+        const newPrice = currentPrice * (1 + changePercent / 100);
+
+        return {
+          ...stock,
+          price: newPrice.toFixed(2),
+          // Update change percentage slightly too
+          change: (parseFloat(stock.change) + changePercent).toFixed(2)
+        };
+      }));
+    }, 3000); // Live update every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [loading]); // We don't depend on stocks directly to avoid infinite re-render loop if we did it wrong, but here functional update is safe.
+  // Actually, dependency on `loading` is enough to start it once mock data is loaded.
+
+  const unlockBadge = (badgeName, badgeIcon) => {
+    if (!badges.some(b => b.name === badgeName)) {
+      const newBadge = { name: badgeName, icon: badgeIcon, date: new Date().toISOString() };
+      setBadges(prev => [...prev, newBadge]);
+      setNotification(`${t.badgeUnlocked} ${badgeName}`);
+      setTimeout(() => setNotification(null), 5000);
+    }
+  };
+
   const checkAlerts = (currentStocks) => {
     if (!currentStocks || currentStocks.length === 0) return;
 
     const newAlerts = alerts.filter(alert => {
       const coin = currentStocks.find(c => c.id === alert.coinId);
-      if (!coin) return true; // Keep alert if coin not found (maybe temporary)
+      if (!coin) return true; // Keep alert if coin not found
 
       const currentPrice = parseFloat(coin.price);
       let triggered = false;
@@ -152,7 +284,7 @@ function App() {
       }
 
       if (triggered) {
-        setTimeout(() => setNotification(null), 5000); // Hide after 5s
+        setTimeout(() => setNotification(null), 5000);
         return false; // Remove alert
       }
       return true; // Keep alert
@@ -174,7 +306,7 @@ function App() {
         const data = await fetchStocks();
         if (data && data.length > 0) {
           setStocks(data);
-          checkAlerts(data); // Check alerts on new data
+          checkAlerts(data);
           const now = new Date();
           setLastUpdated(now.toLocaleTimeString(language === 'tr' ? 'tr-TR' : 'en-US'));
         }
@@ -187,16 +319,13 @@ function App() {
 
     loadData();
 
-    const interval = setInterval(loadData, 30000);
+    // Re-fetch clean data every 60s
+    const interval = setInterval(loadData, 60000);
     return () => clearInterval(interval);
-  }, [language, alerts]); // Re-run if alerts change to ensure latest alerts are checked against next update
+  }, [language, alerts]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-  };
-
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'tr' ? 'en' : 'tr');
   };
 
   const toggleFavorite = (e, coinId) => {
@@ -218,6 +347,11 @@ function App() {
       [coinId]: (prev[coinId] || 0) + parseFloat(amount)
     }));
     alert(t.successTransaction);
+
+    // Badge Logic
+    unlockBadge('İlk Yatırımcı', '🌱');
+    if (cost > 50000) unlockBadge('Balina', '🐳');
+    if (Object.keys(portfolio).length >= 2) unlockBadge('Çeşitlilik Uzmanı', '💼');
   };
 
   const handleSell = (coinId, amount, price) => {
@@ -233,6 +367,9 @@ function App() {
       [coinId]: prev[coinId] - parseFloat(amount)
     }));
     alert(t.successTransaction);
+
+    // Badge Logic
+    if (earnings > 10000) unlockBadge('Kâr Ustası', '💰');
   };
 
   // Compute stats
@@ -273,38 +410,45 @@ function App() {
     <div className="container">
       <header className="app-header">
         <h1>{t.title}</h1>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <div className="wallet-badge" style={{
-            background: 'var(--bg-secondary)',
-            padding: '0.5rem 1rem',
-            borderRadius: '12px',
-            border: '1px solid var(--glass-border)',
-            fontWeight: 'bold',
-            color: 'var(--accent-green)'
-          }}>
-            💰 {t.wallet}
+        <div className="header-actions">
+          <div className="wallet-badge" onClick={() => setShowWallet(true)} style={{ cursor: 'pointer' }}>
+            <span className="wallet-icon">💰</span> {t.wallet}
           </div>
-          <button className="theme-toggle" onClick={toggleLanguage}>
-            {t.langBtn}
-          </button>
-          <button className="theme-toggle" onClick={toggleTheme}>
+          <select
+            className="nav-btn"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            style={{
+              appearance: 'none',
+              backgroundImage: 'none',
+              textAlign: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="tr">🇹🇷 TR</option>
+            <option value="en">🇺🇸 EN</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="fr">🇫🇷 FR</option>
+          </select>
+          <button className="nav-btn" onClick={toggleTheme}>
             {isDarkMode ? t.lightMode : t.darkMode}
           </button>
         </div>
       </header>
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', margin: '1rem 0' }}>
+      {/* News Ticker */}
+      <NewsTicker />
+
+      <div className="main-actions">
         <button
-          className={`theme-toggle ${showFavoritesOnly ? 'active' : ''}`}
+          className={`action-btn ${showFavoritesOnly ? 'active' : ''}`}
           onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-          style={{ background: showFavoritesOnly ? 'var(--accent-red)' : 'var(--bg-secondary)', border: showFavoritesOnly ? 'none' : '1px solid var(--glass-border)' }}
         >
           {showFavoritesOnly ? t.allCoins : t.favorites}
         </button>
         <button
-          className="theme-toggle"
+          className="action-btn"
           onClick={() => setShowConverter(true)}
-          style={{ background: 'var(--bg-secondary)' }}
         >
           🧮 {t.converter}
         </button>
@@ -321,7 +465,7 @@ function App() {
           <div className="summary-card positive">
             <h3>{t.topGainer}</h3>
             <div className="summary-info">
-              {topGainer.image && <img src={topGainer.image} alt={topGainer.code} style={{ width: 32, height: 32, borderRadius: '50%' }} />}
+              {topGainer.image && <img src={topGainer.image} alt={topGainer.code} style={{ width: 32, height: 32, borderRadius: '50%' }} className="summary-img" />}
               <div>
                 <span className="summary-code">{topGainer.code}</span>
                 <span className="summary-change">%{topGainer.change}</span>
@@ -331,7 +475,7 @@ function App() {
           <div className="summary-card negative">
             <h3>{t.topLoser}</h3>
             <div className="summary-info">
-              {topLoser.image && <img src={topLoser.image} alt={topLoser.code} style={{ width: 32, height: 32, borderRadius: '50%' }} />}
+              {topLoser.image && <img src={topLoser.image} alt={topLoser.code} style={{ width: 32, height: 32, borderRadius: '50%' }} className="summary-img" />}
               <div>
                 <span className="summary-code">{topLoser.code}</span>
                 <span className="summary-change">%{topLoser.change}</span>
@@ -397,23 +541,20 @@ function App() {
         />
       )}
 
+      {showWallet && (
+        <WalletModal
+          onClose={() => setShowWallet(false)}
+          portfolio={portfolio}
+          stocks={stocks}
+          t={t}
+          balance={balance}
+          badges={badges}
+        />
+      )}
+
       {/* Toast Notification */}
       {notification && (
-        <div style={{
-          position: 'fixed',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'var(--accent-red)',
-          color: 'white',
-          padding: '1rem 2rem',
-          borderRadius: '12px',
-          fontSize: '1.2rem',
-          fontWeight: 'bold',
-          zIndex: 2000,
-          boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-          animation: 'fadeInUp 0.5s ease'
-        }}>
+        <div className="toast-notification">
           {notification}
         </div>
       )}

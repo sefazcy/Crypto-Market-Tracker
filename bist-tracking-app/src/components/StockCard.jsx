@@ -39,11 +39,12 @@ const StockCard = ({ stock, onClick, isFavorite, onToggleFavorite }) => {
     return (
         <div className="stock-card" onClick={onClick} style={{ cursor: 'pointer' }}>
             <button
+                className="heart-icon-btn"
                 onClick={onToggleFavorite}
                 style={{
                     position: 'absolute',
-                    bottom: '1rem',
-                    left: '1rem',
+                    top: '1.5rem',
+                    right: '1.5rem',
                     background: 'none',
                     border: 'none',
                     fontSize: '1.5rem',
@@ -51,7 +52,7 @@ const StockCard = ({ stock, onClick, isFavorite, onToggleFavorite }) => {
                     zIndex: 10,
                     color: isFavorite ? '#ef4444' : 'var(--text-secondary)',
                     opacity: isFavorite ? 1 : 0.4,
-                    transition: 'all 0.2s'
+                    transition: 'color 0.2s, opacity 0.2s'
                 }}
             >
                 {isFavorite ? '❤️' : '🤍'}
