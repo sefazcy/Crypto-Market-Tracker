@@ -4,7 +4,7 @@ import StockList from './components/StockList';
 import CoinDetailModal from './components/CoinDetailModal';
 import ConverterModal from './components/ConverterModal';
 import NewsTicker from './components/NewsTicker';
-import WalletModal from './components/WalletModal';
+
 
 function App() {
   const [stocks, setStocks] = useState([]);
@@ -410,30 +410,7 @@ function App() {
     <div className="container">
       <header className="app-header">
         <h1>{t.title}</h1>
-        <div className="header-actions">
-          <div className="wallet-badge" onClick={() => setShowWallet(true)} style={{ cursor: 'pointer' }}>
-            <span className="wallet-icon">💰</span> {t.wallet}
-          </div>
-          <select
-            className="nav-btn"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            style={{
-              appearance: 'none',
-              backgroundImage: 'none',
-              textAlign: 'center',
-              cursor: 'pointer'
-            }}
-          >
-            <option value="tr">🇹🇷 TR</option>
-            <option value="en">🇺🇸 EN</option>
-            <option value="es">🇪🇸 ES</option>
-            <option value="fr">🇫🇷 FR</option>
-          </select>
-          <button className="nav-btn" onClick={toggleTheme}>
-            {isDarkMode ? t.lightMode : t.darkMode}
-          </button>
-        </div>
+
       </header>
 
       {/* News Ticker */}
@@ -541,16 +518,7 @@ function App() {
         />
       )}
 
-      {showWallet && (
-        <WalletModal
-          onClose={() => setShowWallet(false)}
-          portfolio={portfolio}
-          stocks={stocks}
-          t={t}
-          balance={balance}
-          badges={badges}
-        />
-      )}
+
 
       {/* Toast Notification */}
       {notification && (
